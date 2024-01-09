@@ -4,6 +4,7 @@ import 'gradient_container.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Scaffold(
       appBar: AppBar(
         title: const Center(
