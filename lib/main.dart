@@ -22,8 +22,24 @@ class HomeActivity extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
-          title: const Text('Home',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+        title: const Text(
+          'Home',
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('images/quiz-logo.png', width: 200, height: 200,),
+            Padding(padding: EdgeInsets.only(top:30)),
+            Text('Learn Flutter The Fun Way', style: TextStyle(fontSize: 20, color: Colors.white),),
+            
+          ]
+        ),
+      ),
+      backgroundColor: Colors.purple,
     );
   }
 }
