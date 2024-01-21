@@ -9,6 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: HomeActivity(),
     );
   }
@@ -32,11 +33,31 @@ class HomeActivity extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('images/quiz-logo.png', width: 200, height: 200,),
-            Padding(padding: EdgeInsets.only(top:30)),
-            Text('Learn Flutter The Fun Way', style: TextStyle(fontSize: 20, color: Colors.white),),
-            
-          ]
+            Image.asset(
+              'images/quiz-logo.png',
+              width: 250,
+              height: 250,
+            ),
+            const Padding(padding: EdgeInsets.only(top: 30)),
+            const Text(
+              'Learn Flutter The Fun Way',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(color: Colors.white),
+                ),
+              ),
+              child: const Text(
+                'Start Quiz',
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+          ],
         ),
       ),
       backgroundColor: Colors.purple,
