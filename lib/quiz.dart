@@ -10,6 +10,16 @@ class Quiz extends StatefulWidget {
 class _QuizState extends State<Quiz> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.purple,
+        title: const Text(
+          'Home',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),),
+    );
   }
 }
