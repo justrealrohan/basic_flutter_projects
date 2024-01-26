@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quizapp/quiz.dart';
+import 'package:quizapp/questions/quiz.dart';
 
 void main() {
   runApp(const MyApp());
@@ -64,13 +64,15 @@ class HomeActivity extends StatelessWidget {
               const Padding(padding: EdgeInsets.only(top: 20)),
               OutlinedButton.icon(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Quiz()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const quiz()));
                 },
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  side: const BorderSide(color: Colors.white), // Set border color
+                  side: const BorderSide(
+                      color: Colors.white), // Set border color
                 ),
                 icon: const Icon(Icons.arrow_forward, color: Colors.white),
                 label: const Text(
