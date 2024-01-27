@@ -99,7 +99,12 @@ class _dashboardState extends State<dashboard> {
                       width: 50,
                       height: 50,
                     ),
-                    trailing: const Icon(Icons.delete),
+                    trailing: InkWell(
+                      onTap: () {
+                        products.remove(products[index]);
+                        setState(() {});
+                      },
+                      child: const Icon(Icons.delete),),
                   );
                 },
               ),
