@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:quizapp/answer.dart';
+import 'package:quizapp/main.dart';
 
 ButtonStyle buttonStyle = TextButton.styleFrom(
   backgroundColor: Colors.white,
@@ -71,8 +72,7 @@ class quiz5 extends StatelessWidget {
                         content: Text('Correct Answer'),
                       ),
                     );
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => quiz5()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeActivity()));
                   },
                   style: buttonStyle,
                   child: const Text('B) Stream'),
