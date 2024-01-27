@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
-
-import 'gradient_container.dart';
+import 'package:myapp_1/splash_screen.dart';
+import 'login_screen.dart';
 
 void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Dice App',
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 25,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.5),
-          ),
-        ),
-        backgroundColor: Colors.deepPurple,
-      ),
-      body: const GradientContainer(),
-    ),
-  ));
+  runApp(const TechStore());
 }
+
+class TechStore extends StatelessWidget {
+  const TechStore({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: splashscreen(),
+    );
+  }
+}
+
+
