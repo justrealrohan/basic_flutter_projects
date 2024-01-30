@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:myapp_1/splash_screen.dart';
+import 'package:myapp_1/home_screen.dart';
 
 void main() {
-  runApp(const TechStore());
+  runApp(const SumApp());
 }
 
-class TechStore extends StatelessWidget {
-  const TechStore({super.key});
+ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+  backgroundColor: Colors.blue,
+  foregroundColor: Colors.white,
+  textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+);
+
+class SumApp extends StatelessWidget {
+  const SumApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: splashscreen(),
+      home: HomeScreen(),
     );
   }
 }
