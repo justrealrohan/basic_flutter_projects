@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp_1/main.dart';
+import 'package:myapp_1/water_consume.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,132 +9,112 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-final TextEditingController _numOneTEController = TextEditingController();
-final TextEditingController _numTwoTEController = TextEditingController();
-GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-double _result = 0;
-
 class _HomeScreenState extends State<HomeScreen> {
+  List<WaterConsume> waterConsumeList = [];
+  final TextEditingController _noOfGlassesTEController =
+      TextEditingController(text: '1');
+  final TextEditingController _noteTEController =
+      TextEditingController(text: 'Morning');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        leading: const Icon(
-          Icons.home,
-          size: 28,
-          color: Colors.white,
-        ),
+        backgroundColor: Colors.purple,
+        leading: const Icon(Icons.home, color: Colors.white, size: 25),
         title: const Text(
-          'Home',
+          'Water Tracker',
           style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 25, fontWeight: FontWeight.w600, color: Colors.white),
         ),
         actions: const [
-          Icon(Icons.menu, size: 28, color: Colors.white),
-          Padding(padding: EdgeInsets.only(right: 15)),
+          Icon(Icons.menu, color: Colors.white, size: 25),
+          Padding(
+            padding: EdgeInsets.only(right: 15),
+          ),
         ],
+        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextFormField(
-                keyboardType: TextInputType.number,
-                controller: _numOneTEController,
-                validator: (String? value) {
-                  String v = value ?? '0';
-                  if (v.isEmpty) {
-                    return 'Please enter a number';
+              InkWell(
+                onTap: () {
+                  if (_noOfGlassesTEController.text.isEmpty) {
+                    _noOfGlassesTEController.text = '1';
                   }
-                  return null;
+                  final noOfGlasses = _noOfGlassesTEController.text.trim();
+                  int value = int.tryParse(noOfGlasses)?? 1;
+                  waterConsumeList.add(
+                    WaterConsume(value, DateTime.now(), _noteTEController.text,));
+                  setState(() {});
                 },
-                decoration: const InputDecoration(
-                  hintText: 'Input Number One',
-                  border: OutlineInputBorder(),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.deepOrange, width: 5),
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  alignment: Alignment.center,
+                  height: 150,
+                  width: 150,
+                  child: const Text(
+                    'Tap to Add',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _numTwoTEController,
-                keyboardType: TextInputType.number,
-                validator: (String? value) {
-                  String v = value ?? '0';
-                  if (v.isEmpty) {
-                    return 'Please enter a number';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                    hintText: 'Input Number Two', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 20),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          double numOne = double.tryParse(
-                                _numOneTEController.text.trim(),
-                              ) ??
-                              0;
-                          double numTwo = double.tryParse(
-                                _numTwoTEController.text.trim(),
-                              ) ??
-                              0;
-                          _result = numOne + numTwo;
-                          setState(() {});
-                        }
-                      },
-                      style: buttonStyle,
-                      child: const Text('add'),
+                  SizedBox(
+                    width: 100,
+                    child: TextField(
+                      controller: _noOfGlassesTEController,
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          double numOne = double.tryParse(
-                                _numOneTEController.text.trim(),
-                              ) ??
-                              0;
-                          double numTwo = double.tryParse(
-                                _numTwoTEController.text.trim(),
-                              ) ??
-                              0;
-                          _result = numOne - numTwo;
-                          setState(() {});
-                        }
-                      },
-                      style: buttonStyle,
-                      child: const Text('sub'),
+                  const SizedBox(width: 20,),
+                  SizedBox(
+                    width: 200,
+                    child: TextField(
+                      controller: _noteTEController,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        clear();
-                        setState(() {});
-                      },
-                      style: buttonStyle,
-                      child: const Text('clear'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
                 ],
               ),
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                'Result is $_result',
-                style:
-                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 25),
+              ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                reverse: true,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      child: Text(waterConsumeList[index].numOfGlasses.toString()),
+                    ),
+                    title: Text(
+                        waterConsumeList[index].note),
+                    subtitle: Text('Time: ${DateFormat.yMMMMEEEEd().format(waterConsumeList[index].time)}'),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: (){
+                        waterConsumeList.removeAt(index);
+                        setState(() {});
+                      },
+                    )
+                  );
+                },
+                itemCount: waterConsumeList.length,
               ),
             ],
           ),
@@ -141,18 +122,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
-
-double add(double numOne, double numTwo) {
-  return numOne + numTwo;
-}
-
-double sub(numOne, numTwo) {
-  return numOne - numTwo;
-}
-
-void clear() {
-  _numOneTEController.clear();
-  _numTwoTEController.clear();
-  _result = 0;
 }
