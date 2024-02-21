@@ -1,4 +1,5 @@
 import 'package:basic_flutter_projects_1/add_new_todo_screen.dart';
+import 'package:basic_flutter_projects_1/todo_list_class.dart';
 import 'package:flutter/material.dart';
 import 'package:basic_flutter_projects_1/edit_todo_screen.dart';
 
@@ -8,6 +9,8 @@ class TodoListScreen extends StatefulWidget {
   @override
   State<TodoListScreen> createState() => _TodoListScreenState();
 }
+
+List<Todo> todoList = [];
 
 class _TodoListScreenState extends State<TodoListScreen> {
   @override
@@ -19,60 +22,57 @@ class _TodoListScreenState extends State<TodoListScreen> {
           ),
           centerTitle: true,
         ),
-        body: ListView.separated(
-          separatorBuilder: (context, index) => const Divider(
-            color: Colors.grey,
-            height: 12,
-            indent: 16,
-            endIndent: 16,
+        body: Visibility(
+          visible: todoList.isNotEmpty,
+          replacement: const Center(
+            child: Text('No Todos Yet'),
           ),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: const Text('Todo Title'),
-              subtitle: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Todo Body'),
-                  Text('Time'),
-                ],
-              ),
-              trailing: Wrap(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const editTodo()),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      showDeleteDialog(context);
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
+          child: ListView.separated(
+            separatorBuilder: (context, index) => const Divider(
+              color: Colors.grey,
+              height: 12,
+              indent: 16,
+              endIndent: 16,
+            ),
+            itemCount: todoList.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(todoList[index].title),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(todoList[index].description),
+                    Text(
+                      todoList[index].time.toString(),
+                    ),
+                  ],
+                ),
+                trailing: Wrap(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        onTapEditTodo(index);
+                      },
+                    ),
+                    IconButton(
+                      onPressed: () => showDeleteDialog(index),
+                      icon: const Icon(Icons.delete),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const addNewTodo()),
-            );
-          },
+          onPressed: _onTapTodoFab,
           backgroundColor: Colors.amber,
           child: const Icon(Icons.add),
         ));
   }
 
-  void showDeleteDialog(BuildContext context) {
+  void showDeleteDialog(int index) {
     showDialog(
       context: context,
       builder: (context) {
@@ -91,7 +91,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ),
             TextButton(
               onPressed: () {
+                todoList.removeAt(index);
                 Navigator.pop(context);
+                setState(() {});
               },
               child: const Text(
                 'Yes, Delete',
@@ -102,5 +104,31 @@ class _TodoListScreenState extends State<TodoListScreen> {
         );
       },
     );
+  }
+
+  Future<void> _onTapTodoFab() async {
+    final Todo? result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const addNewTodo()),
+    );
+    if (result != null) {
+      todoList.add(result);
+      setState(() {});
+    }
+  }
+
+  Future<void> onTapEditTodo(int index) async {
+    final Todo? updatedTodo = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => editTodo(
+          todo: todoList[index],
+        ),
+      ),
+    );
+    if (updatedTodo != null) {
+      todoList[index] = updatedTodo;
+      setState(() {});
+    }
   }
 }

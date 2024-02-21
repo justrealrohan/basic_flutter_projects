@@ -1,26 +1,34 @@
+import 'package:basic_flutter_projects_1/todo_list_class.dart';
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
 class editTodo extends StatefulWidget {
-  const editTodo({super.key});
+  const editTodo({super.key, required this.todo});
+
+  final Todo todo;
 
   @override
   State<editTodo> createState() => _editTodoState();
 }
 
-GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-TextEditingController _titleController = TextEditingController();
-TextEditingController _descriptionController = TextEditingController();
-
 // ignore: camel_case_types
 class _editTodoState extends State<editTodo> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController.text = widget.todo.title;
+    _descriptionController.text = widget.todo.description;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Edit Todo',
-        ),
+        title: const Text('Edit Todo'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,10 +67,15 @@ class _editTodoState extends State<editTodo> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.pop(context);
+                      Todo todo = Todo(
+                        _titleController.text.trim(),
+                        _descriptionController.text.trim(),
+                        DateTime.now(),
+                      );
+                      Navigator.pop(context, todo);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Todo Added Successfully'),
+                          content: Text('Todo Edited Successfully'),
                         ),
                       );
                     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:basic_flutter_projects_1/todo_list_class.dart';
 
 // ignore: camel_case_types
 class addNewTodo extends StatefulWidget {
@@ -59,7 +60,9 @@ class _addNewTodoState extends State<addNewTodo> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.pop(context);
+                      Todo todo = Todo(_titleController.text,
+                          _descriptionController.text, DateTime.now());
+                      Navigator.pop(context, todo);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Todo Added Successfully'),
