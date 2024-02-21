@@ -89,11 +89,4 @@ class _editTodoState extends State<editTodo> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
 }

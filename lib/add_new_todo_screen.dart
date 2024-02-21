@@ -79,11 +79,4 @@ class _addNewTodoState extends State<addNewTodo> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
 }
