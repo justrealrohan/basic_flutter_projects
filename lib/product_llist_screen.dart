@@ -1,3 +1,4 @@
+import 'package:basic_flutter_projects_1/edit_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'add_new_product_screen.dart';
 
@@ -40,22 +41,39 @@ class _productListScreenState extends State<productListScreen> {
             trailing: PopupMenuButton(
               itemBuilder: (context) {
                 return [
-                  const PopupMenuItem(
-                    child: Row(
-                      children: [
-                        Icon(Icons.edit),
-                        SizedBox(width: 10),
-                        Text('Edit'),
-                      ],
+                  PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const editProductScreen();
+                            },
+                          ),
+                        );
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(Icons.edit),
+                          SizedBox(width: 10),
+                          Text('Edit'),
+                        ],
+                      ),
                     ),
                   ),
-                  const PopupMenuItem(
-                    child: Row(
-                      children: [
-                        Icon(Icons.delete),
-                        SizedBox(width: 10),
-                        Text('Delete'),
-                      ],
+                  PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        _showDialog();
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(Icons.delete),
+                          SizedBox(width: 10),
+                          Text('Delete'),
+                        ],
+                      ),
                     ),
                   ),
                 ];
@@ -70,7 +88,7 @@ class _productListScreenState extends State<productListScreen> {
             context,
             MaterialPageRoute(
               builder: (context) {
-                return addNNewProductScreen();
+                return const addNNewProductScreen();
               },
             ),
           );
@@ -83,6 +101,35 @@ class _productListScreenState extends State<productListScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Product'),
+          content: const Text('Are you sure you want to delete this product?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Yes, Delete',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -39,6 +39,10 @@ class _crudAppState extends State<crudApp> {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
+              textStyle: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
               padding: const EdgeInsets.symmetric(vertical: 15),
               foregroundColor: Colors.white,
               backgroundColor: Colors.amber,

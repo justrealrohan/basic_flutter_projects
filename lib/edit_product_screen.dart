@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
-class addNNewProductScreen extends StatefulWidget {
-  const addNNewProductScreen({super.key});
+class editProductScreen extends StatefulWidget {
+  const editProductScreen({super.key});
 
   @override
-  State<addNNewProductScreen> createState() => _addNNewProductScreenState();
+  State<editProductScreen> createState() => _editProductScreenState();
 }
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -20,12 +20,12 @@ final TextEditingController _productCodeController = TextEditingController();
 final TextEditingController _productImageController = TextEditingController();
 
 // ignore: camel_case_types
-class _addNNewProductScreenState extends State<addNNewProductScreen> {
+class _editProductScreenState extends State<editProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Product'.toUpperCase()),
+        title: Text('Edit Product'.toUpperCase()),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -35,7 +35,8 @@ class _addNNewProductScreenState extends State<addNNewProductScreen> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  validator: validateInput,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Enter Product Name' : null,
                   controller: _productNameController,
                   decoration: const InputDecoration(
                     labelText: 'Product Name',
@@ -46,7 +47,8 @@ class _addNNewProductScreenState extends State<addNNewProductScreen> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  validator: validateInput,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Enter Product Code' : null,
                   controller: _productCodeController,
                   decoration: const InputDecoration(
                     labelText: 'Product Code',
@@ -57,7 +59,8 @@ class _addNNewProductScreenState extends State<addNNewProductScreen> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  validator: validateInput,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Enter Unit Price' : null,
                   controller: _productUnitPriceController,
                   decoration: const InputDecoration(
                     labelText: 'Unit Price',
@@ -68,7 +71,8 @@ class _addNNewProductScreenState extends State<addNNewProductScreen> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  validator: validateInput,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Enter Product Quantity' : null,
                   controller: _productQuantityController,
                   decoration: const InputDecoration(
                     labelText: 'Product Quantity',
@@ -79,7 +83,8 @@ class _addNNewProductScreenState extends State<addNNewProductScreen> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  validator: validateInput,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Enter Total Price' : null,
                   controller: _productTotalPriceController,
                   decoration: const InputDecoration(
                     labelText: 'Total Price',
@@ -90,7 +95,8 @@ class _addNNewProductScreenState extends State<addNNewProductScreen> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  validator: validateInput,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Enter Product Image' : null,
                   controller: _productImageController,
                   decoration: const InputDecoration(
                     labelText: 'Product Image',
@@ -115,12 +121,5 @@ class _addNNewProductScreenState extends State<addNNewProductScreen> {
         ),
       ),
     );
-  }
-
-  String? validateInput(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter some text';
-    }
-    return null;
   }
 }
