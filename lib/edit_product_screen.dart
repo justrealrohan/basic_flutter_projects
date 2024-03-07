@@ -32,77 +32,41 @@ class _editProductScreenState extends State<editProductScreen> {
           key: _formKey,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter Product Name' : null,
-                  controller: _productNameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Product Name',
-                    hintText: 'Product Name',
-                  ),
-                ),
+              paddedTextFormField(
+                labelText: 'Product Name',
+                hintText: 'Product Name',
+                controller: _productNameController,
+                validator: validateInput,
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter Product Code' : null,
-                  controller: _productCodeController,
-                  decoration: const InputDecoration(
-                    labelText: 'Product Code',
-                    hintText: 'Product Code',
-                  ),
-                ),
+              paddedTextFormField(
+                labelText: 'Product Code',
+                hintText: 'Product Code',
+                controller: _productCodeController,
+                validator: validateInput,
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter Unit Price' : null,
-                  controller: _productUnitPriceController,
-                  decoration: const InputDecoration(
-                    labelText: 'Unit Price',
-                    hintText: 'Unit Price',
-                  ),
-                ),
+              paddedTextFormField(
+                labelText: 'Unit Price',
+                hintText: 'Unit Price',
+                controller: _productUnitPriceController,
+                validator: validateInput,
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter Product Quantity' : null,
-                  controller: _productQuantityController,
-                  decoration: const InputDecoration(
-                    labelText: 'Product Quantity',
-                    hintText: 'Product Quantity',
-                  ),
-                ),
+              paddedTextFormField(
+                labelText: 'Product Quantity',
+                hintText: 'Product Quantity',
+                controller: _productQuantityController,
+                validator: validateInput,
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter Total Price' : null,
-                  controller: _productTotalPriceController,
-                  decoration: const InputDecoration(
-                    labelText: 'Total Price',
-                    hintText: 'Total Price',
-                  ),
-                ),
+              paddedTextFormField(
+                labelText: 'Total Price',
+                hintText: 'Total Price',
+                controller: _productTotalPriceController,
+                validator: validateInput,
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter Product Image' : null,
-                  controller: _productImageController,
-                  decoration: const InputDecoration(
-                    labelText: 'Product Image',
-                    hintText: 'Product Image',
-                  ),
-                ),
+              paddedTextFormField(
+                labelText: 'Product Image',
+                hintText: 'Product Image',
+                controller: _productImageController,
+                validator: validateInput,
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
@@ -112,12 +76,38 @@ class _editProductScreenState extends State<editProductScreen> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {}
                     },
-                    child: const Text('Add Product'),
+                    child: const Text('Update Product'),
                   ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  String? validateInput(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter some text';
+    }
+    return null;
+  }
+
+  Widget paddedTextFormField({
+    required String labelText,
+    required String hintText,
+    required TextEditingController controller,
+    required FormFieldValidator<String> validator,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: TextFormField(
+        validator: validator,
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          hintText: hintText,
         ),
       ),
     );

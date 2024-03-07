@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:basic_flutter_projects_1/edit_product_screen.dart';
+import 'package:basic_flutter_projects_1/products.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'add_new_product_screen.dart';
 
 // ignore: camel_case_types
@@ -15,72 +19,92 @@ class productListScreen extends StatefulWidget {
 // ignore: camel_case_types
 class _productListScreenState extends State<productListScreen> {
   @override
+  void initState() {
+    super.initState();
+    getProducts();
+  }
+
+  bool isLoading = false;
+
+  List<ProductList> products = [];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Product List'.toUpperCase()),
       ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: const CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1926&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-            ),
-            title: const Text('Product Name'),
-            subtitle: const Wrap(
-              spacing: 15,
-              children: [
-                Text('Product Description'),
-                Text('Product Price'),
-                Text('Product Quantity'),
-                Text('Product Code'),
-              ],
-            ),
-            trailing: PopupMenuButton(
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const editProductScreen();
-                            },
-                          ),
-                        );
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(Icons.edit),
-                          SizedBox(width: 10),
-                          Text('Edit'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    child: InkWell(
-                      onTap: () {
-                        _showDialog();
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(Icons.delete),
-                          SizedBox(width: 10),
-                          Text('Delete'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ];
-              },
-            ),
-          );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          getProducts();
         },
+        child: Visibility(
+          visible: isLoading == false,
+          replacement: const Center(
+            child: CircularProgressIndicator(),
+          ),
+          child: ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(products[index].img),
+                ),
+                title: Text(products[index].productName),
+                subtitle: Wrap(
+                  spacing: 15,
+                  children: [
+                    Text('Product Code: ${products[index].productCode}'),
+                    Text('Qty: ${products[index].qty}'),
+                    Text('Unit Price: ${products[index].unitPrice}'),
+                    Text('Total Price: ${products[index].totalPrice}'),
+                  ],
+                ),
+                trailing: PopupMenuButton(
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const editProductScreen();
+                                },
+                              ),
+                            );
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(Icons.edit),
+                              SizedBox(width: 10),
+                              Text('Edit'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        child: InkWell(
+                          onTap: () {
+                            _showDialog();
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(Icons.delete),
+                              SizedBox(width: 10),
+                              Text('Delete'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                ),
+              );
+            },
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -131,5 +155,29 @@ class _productListScreenState extends State<productListScreen> {
         );
       },
     );
+  }
+
+  void getProducts() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final response = await get(
+      Uri.parse('https://crud.teamrabbil.com/api/v1/ReadProduct'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+      final List<dynamic> productsJson =
+          decodedResponse['data']; // replace 'data' with the actual key
+      products =
+          productsJson.map((json) => ProductList.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load products');
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 }
