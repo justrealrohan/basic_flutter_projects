@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:basic_flutter_projects_1/edit_product_screen.dart';
 import 'package:basic_flutter_projects_1/products.dart';
@@ -64,15 +66,19 @@ class _productListScreenState extends State<productListScreen> {
                     return [
                       PopupMenuItem(
                         child: InkWell(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return EditProductScreen(product: products[index]);
+                                  return EditProductScreen(
+                                      product: products[index]);
                                 },
                               ),
                             );
+                            if (result != null && result == true) {
+                              getProducts();
+                            }
                           },
                           child: const Row(
                             children: [
@@ -86,7 +92,7 @@ class _productListScreenState extends State<productListScreen> {
                       PopupMenuItem(
                         child: InkWell(
                           onTap: () {
-                            _showDialog();
+                            _showDialog(products.elementAt(index).id);
                           },
                           child: const Row(
                             children: [
@@ -127,7 +133,7 @@ class _productListScreenState extends State<productListScreen> {
     );
   }
 
-  void _showDialog() {
+  void _showDialog(String productId) {
     showDialog(
       context: context,
       builder: (context) {
@@ -143,6 +149,7 @@ class _productListScreenState extends State<productListScreen> {
             ),
             TextButton(
               onPressed: () {
+                deleteProduct(productId);
                 Navigator.pop(context);
               },
               child: const Text(
@@ -157,9 +164,8 @@ class _productListScreenState extends State<productListScreen> {
   }
 
   void getProducts() async {
-    setState(() {
-      isLoading = true;
-    });
+    isLoading = true;
+    setState(() {});
 
     final response = await get(
       Uri.parse('https://crud.teamrabbil.com/api/v1/ReadProduct'),
@@ -174,9 +180,29 @@ class _productListScreenState extends State<productListScreen> {
     } else {
       throw Exception('Failed to load products');
     }
+    isLoading = false;
+    setState(() {});
+  }
 
-    setState(() {
+  // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
+  void deleteProduct(String productId) async {
+    isLoading = true;
+    setState(() {});
+    Uri url = Uri.parse(
+        'https://crud.teamrabbil.com/api/v1/DeleteProduct/$productId');
+    Response response = await get(url);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      products.removeWhere((element) => element.id == productId);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to delete product'),
+        ),
+      );
       isLoading = false;
-    });
+      setState(() {});
+    }
   }
 }

@@ -129,12 +129,12 @@ class _addNNewProductScreenState extends State<addNNewProductScreen> {
     setState(() {});
     Uri url = Uri.parse('https://crud.teamrabbil.com/api/v1/ReadProduct');
     Map<String, dynamic> params = {
-      'ProductName': _productNameController.text.trim(),
-      'ProductCode': _productCodeController.text.trim(),
-      'UnitPrice': _productUnitPriceController.text.trim(),
-      'Qty': _productQuantityController.text.trim(),
-      'TotalPrice': _productTotalPriceController.text.trim(),
-      'Img': _productImageController.text.trim(),
+      "Img": _productImageController.text.trim(),
+      "ProductCode": _productCodeController.text.trim(),
+      "ProductName": _productNameController.text.trim(),
+      "Qty": _productQuantityController.text.trim(),
+      "TotalPrice": _productTotalPriceController.text.trim(),
+      "UnitPrice": _productUnitPriceController.text.trim(),
     };
     await post(url, body: jsonEncode(params), headers: {
       'Content-Type': 'application/json',
