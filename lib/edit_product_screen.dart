@@ -138,18 +138,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    // Dispose of the controllers to avoid memory leaks
-    _productNameController.dispose();
-    _productCodeController.dispose();
-    _productUnitPriceController.dispose();
-    _productQuantityController.dispose();
-    _productTotalPriceController.dispose();
-    _productImageController.dispose();
-    super.dispose();
-  }
-
   void updateProduct() async {
     isLoading = true;
     setState(() {});
@@ -169,19 +157,27 @@ class _EditProductScreenState extends State<EditProductScreen> {
       'Content-Type': 'application/json',
     });
     isLoading = false;
-    setState(() {
-      _productNameController.clear();
-      _productCodeController.clear();
-      _productUnitPriceController.clear();
-      _productQuantityController.clear();
-      _productTotalPriceController.clear();
-      _productImageController.clear();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Product Updated Successfully'),
-        ),
-      );
-      Navigator.pop(context, true);
-    });
+    setState(
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Product Updated Successfully'),
+          ),
+        );
+        Navigator.pop(context, true);
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the controllers to avoid memory leaks
+    _productNameController.dispose();
+    _productCodeController.dispose();
+    _productUnitPriceController.dispose();
+    _productQuantityController.dispose();
+    _productTotalPriceController.dispose();
+    _productImageController.dispose();
+    super.dispose();
   }
 }
