@@ -1,31 +1,44 @@
+import 'package:basic_flutter_projects_1/products.dart';
 import 'package:flutter/material.dart';
 
-// ignore: camel_case_types
-class editProductScreen extends StatefulWidget {
-  const editProductScreen({super.key});
+class EditProductScreen extends StatefulWidget {
+  final ProductList product;
+
+  const EditProductScreen({super.key, required this.product});
 
   @override
-  State<editProductScreen> createState() => _editProductScreenState();
+  // ignore: library_private_types_in_public_api
+  _EditProductScreenState createState() => _EditProductScreenState();
 }
 
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-final TextEditingController _productNameController = TextEditingController();
-final TextEditingController _productUnitPriceController =
-    TextEditingController();
-final TextEditingController _productTotalPriceController =
-    TextEditingController();
-final TextEditingController _productQuantityController =
-    TextEditingController();
-final TextEditingController _productCodeController = TextEditingController();
-final TextEditingController _productImageController = TextEditingController();
+class _EditProductScreenState extends State<EditProductScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController _productUnitPriceController =
+      TextEditingController();
+  final TextEditingController _productTotalPriceController =
+      TextEditingController();
+  final TextEditingController _productQuantityController =
+      TextEditingController();
+  final TextEditingController _productCodeController = TextEditingController();
+  final TextEditingController _productImageController = TextEditingController();
 
-// ignore: camel_case_types
-class _editProductScreenState extends State<editProductScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _productNameController.text = widget.product.productName;
+    _productCodeController.text = widget.product.productCode;
+    _productUnitPriceController.text = widget.product.unitPrice;
+    _productQuantityController.text = widget.product.qty;
+    _productTotalPriceController.text = widget.product.totalPrice;
+    _productImageController.text = widget.product.img;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Product'.toUpperCase()),
+        title: const Text('Edit Product'),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -34,50 +47,47 @@ class _editProductScreenState extends State<editProductScreen> {
             children: [
               paddedTextFormField(
                 labelText: 'Product Name',
-                hintText: 'Product Name',
+                hintText: 'Enter Product Name',
                 controller: _productNameController,
                 validator: validateInput,
               ),
               paddedTextFormField(
                 labelText: 'Product Code',
-                hintText: 'Product Code',
+                hintText: 'Enter Product Code',
                 controller: _productCodeController,
                 validator: validateInput,
               ),
               paddedTextFormField(
                 labelText: 'Unit Price',
-                hintText: 'Unit Price',
+                hintText: 'Enter Unit Price',
                 controller: _productUnitPriceController,
                 validator: validateInput,
               ),
               paddedTextFormField(
                 labelText: 'Product Quantity',
-                hintText: 'Product Quantity',
+                hintText: 'Enter Product Quantity',
                 controller: _productQuantityController,
                 validator: validateInput,
               ),
               paddedTextFormField(
                 labelText: 'Total Price',
-                hintText: 'Total Price',
+                hintText: 'Enter Total Price',
                 controller: _productTotalPriceController,
                 validator: validateInput,
               ),
               paddedTextFormField(
-                labelText: 'Product Image',
-                hintText: 'Product Image',
+                labelText: 'Product Image URL',
+                hintText: 'Enter Product Image URL',
                 controller: _productImageController,
                 validator: validateInput,
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
-                    },
-                    child: const Text('Update Product'),
-                  ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {}
+                  },
+                  child: const Text('Update Product'),
                 ),
               ),
             ],
@@ -111,5 +121,17 @@ class _editProductScreenState extends State<editProductScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the controllers to avoid memory leaks
+    _productNameController.dispose();
+    _productCodeController.dispose();
+    _productUnitPriceController.dispose();
+    _productQuantityController.dispose();
+    _productTotalPriceController.dispose();
+    _productImageController.dispose();
+    super.dispose();
   }
 }

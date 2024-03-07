@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:basic_flutter_projects_1/edit_product_screen.dart';
 import 'package:basic_flutter_projects_1/products.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +69,7 @@ class _productListScreenState extends State<productListScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return const editProductScreen();
+                                  return EditProductScreen(product: products[index]);
                                 },
                               ),
                             );
